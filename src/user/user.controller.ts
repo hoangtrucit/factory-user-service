@@ -1,6 +1,7 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
 import { USER_TOKEN_SERVICE, UserService } from './user.service';
 import {
+  CreateUserRequest,
   UserServiceController,
   UserServiceControllerMethods,
 } from '@share/protobuf/gRPC/generate/index.app.payment.user.service.v1';
@@ -18,5 +19,12 @@ export class UserController implements UserServiceController {
     return {
       users: await this.userService.get(),
     };
+  }
+
+  @Post('/v1')
+  async createUser(request: CreateUserRequest) {
+    const result = await this.userService.create(request);
+
+    return { id: result.id };
   }
 }

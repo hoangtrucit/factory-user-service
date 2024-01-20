@@ -1,35 +1,9 @@
-import { IsDate, IsEmail, IsNumber, IsString } from 'class-validator';
-import { Transform } from 'class-transformer';
-import * as dayjs from 'dayjs';
-import { Field, ObjectType } from '@nestjs/graphql';
-import { UserEntity } from 'src/postgresql/entities';
-import { OmitType } from '@nestjs/swagger';
+import { IsEmail, IsString } from 'class-validator';
 
-export class UserDTO extends OmitType(UserEntity, ['id']) {
+export class UserDTO {
   @IsString()
-  username: string;
+  userName: string;
 
   @IsEmail()
   email: string;
-
-  @IsDate()
-  @Transform(({ value }) => dayjs(value, 'MM-DD-YYYY').toDate())
-  dob: Date;
-
-  @IsNumber()
-  age = 16;
-}
-
-export class UserResponse extends UserDTO {
-  @IsString()
-  id: string;
-}
-
-@ObjectType()
-export class UserRecipe {
-  @Field(() => String)
-  email: string;
-
-  @Field(() => String)
-  id: string;
 }
